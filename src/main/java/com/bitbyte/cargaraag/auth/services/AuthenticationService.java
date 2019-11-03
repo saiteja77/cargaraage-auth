@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class AuthorizationService {
+public class AuthenticationService {
 
     @Autowired
     private UserRepository userRepository;
@@ -30,7 +30,7 @@ public class AuthorizationService {
     @Value("${hashing.algorithm}")
     private String hashingAlgorithm;
 
-    public String authorizeUser(Credentials userCreds) throws NoSuchAlgorithmException {
+    public String authenticateUser(Credentials userCreds) throws NoSuchAlgorithmException {
         User authenticatedUser = validateUserCredentials(userCreds);
         String token = TokenGenerator.generateToken(authenticatedUser);
         return token;
