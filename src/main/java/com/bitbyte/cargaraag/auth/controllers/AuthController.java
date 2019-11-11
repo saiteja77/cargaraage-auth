@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -23,7 +24,7 @@ public class AuthController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @GetMapping(value = "/login/authorize", produces = "application/json")
+    @PostMapping(value = "/login/authorize", produces = "application/json")
     public ResponseEntity<AuthorizationResponse> authorizeUser(@RequestBody Credentials userCreds){
         try{
             String token = authenticationService.authenticateUser(userCreds);
