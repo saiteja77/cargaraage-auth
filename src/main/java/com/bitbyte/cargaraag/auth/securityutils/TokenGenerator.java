@@ -1,11 +1,13 @@
 package com.bitbyte.cargaraag.auth.securityutils;
 
+import com.bitbyte.cargaraag.auth.entities.Roles;
 import com.bitbyte.cargaraag.auth.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang3.time.DateUtils;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 public class TokenGenerator {
 
@@ -16,12 +18,14 @@ public class TokenGenerator {
                 .setIssuedAt(new Date())
                 .setIssuer("");
         claims.put("clientId", "");
-        claims.put("email", authenticatedUser.getUserName());
+        claims.put("userId", authenticatedUser.getId());
+        claims.put("userName", authenticatedUser.getUserName());
+        claims.put("email", authenticatedUser.getEmail());
         claims.put("firstName", authenticatedUser.getFirstName());
         claims.put("lastName", authenticatedUser.getLastName());
         claims.put("fullName", authenticatedUser.getFirstName() + " " + authenticatedUser.getLastName());
         claims.put("sts", authenticatedUser.getStatus());
-        authenticatedUser.getRoles().forEach(role -> claims.put("group", role.getRole()));
+        claims.put("group", authenticatedUser.getRoles().stream().map(Roles::getRole).collect(Collectors.toList()));
 
         return Jwts.builder()
                 .setClaims(claims)
